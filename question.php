@@ -3,6 +3,9 @@
     include 'database.php';
 
 ?>
+<?php
+    session_start();
+?>
 
 <?php
 
@@ -23,6 +26,14 @@
     $query = "SELECT * from  `choices` where question_number = $number";
     //Get Results
     $choices = $mysqli->query($query) or die($mysqli->error.__LINE__);
+
+    /*
+     * Get Total questions
+     */
+    $query = "select * from questions";
+    //Get Results
+    $results = $mysqli->query($query) or die($mysqli->error.__LINE__);
+    $total = $results->num_rows;
 
 
 ?>
@@ -45,7 +56,7 @@
 
 <main>
     <div class="container">
-        <div class="current">Question 1 of 5</div>
+        <div class="current">Question <?php echo $question['question_number']; ?> of <?php echo $total; ?></div>
         <p class="question">
            <?php echo $question['text'];    ?>
         </p>
@@ -60,6 +71,7 @@
             </ul>
 
             <input type="submit" value="Submit" class="submit">
+            <input type="hidden" name="number" value="<?php echo $number; ?>">
         </form>
 
     </div>
